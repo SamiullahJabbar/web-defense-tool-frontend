@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { FaSignInAlt, FaSpinner } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import { useAuth } from '../services/AuthContext'; // ✅ Corrected Import
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +13,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth(); // ✅ No more "useAuth is not defined" error
 
   const handleLogin = async () => {
     setError('');
@@ -31,8 +33,7 @@ const Login = () => {
       });
 
       if (response && response.data) {
-        localStorage.setItem('access_token', response.data.access);
-        localStorage.setItem('refresh_token', response.data.refresh);
+        login(response.data.access); // Update the authentication state
         navigate('/'); // Redirect to dashboard after successful login
       }
     } catch (err) {

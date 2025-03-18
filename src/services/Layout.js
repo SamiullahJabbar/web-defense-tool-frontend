@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+// Layout.jsx
+import React from 'react';
 import { FaTwitter, FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import { useAuth } from './AuthContext';
 
 const Layout = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Assume user is logged in initially
+  const { isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
   const footerStyle = {
@@ -15,10 +17,8 @@ const Layout = ({ children }) => {
   };
 
   const handleLogout = () => {
-    // Perform logout actions (e.g., clear token, session, etc.)
-    localStorage.removeItem('token'); // Example: Remove token from localStorage
-    setIsLoggedIn(false); // Update login state
-    navigate('/'); // Redirect to home page
+    logout();
+    navigate('/');
   };
 
   return (
